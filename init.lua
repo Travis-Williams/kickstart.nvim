@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -614,7 +614,7 @@ require('lazy').setup({
       -- You can press `g?` for help in this menu.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'lua_ls', -- Lua Language server
+        'lua-language-server', -- Lua Language server
         'stylua', -- Used to format Lua code
         -- You can add other tools here that you want Mason to install
       })
@@ -851,9 +851,18 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
     config = function()
       local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
-      require('nvim-treesitter').install(filetypes)
+      require('nvim-treesitter').setup {
+        ensure_installed = filetypes,
+        sync_install = false,
+        auto_install = true,
+        highlight = {
+          enable = true,
+        },
+      }
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
         callback = function() vim.treesitter.start() end,
