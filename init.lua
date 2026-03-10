@@ -149,6 +149,10 @@ vim.o.splitbelow = true
 --   and `:help lua-guide-options`
 vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.expandtab = true
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -163,6 +167,10 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+-- Disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -482,7 +490,21 @@ require('lazy').setup({
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'mason-org/mason.nvim', opts = {} },
+      {
+        'mason-org/mason.nvim',
+        opts = {
+          servers = {
+            biome = {},
+          },
+          ensure_installed = {
+            'lua-language-server',
+            'stylua',
+            'ts_ls',
+            'vue-language-server',
+            'biome',
+          },
+        },
+      },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -618,6 +640,9 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'lua-language-server', -- Lua Language server
         'stylua', -- Used to format Lua code
+        'vue-language-server', -- Vue Language Server
+        'biome', -- Biome (JavaScript/TypeScript formatter)
+        -- 'ts_ls', --Typescript Language Server
         -- You can add other tools here that you want Mason to install
       })
 
@@ -688,11 +713,16 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        javasscript = { 'biome' },
+        typescript = { 'biome' },
+        vue = { 'biome' },
+        json = { 'biome' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        python = { 'ruff' },
       },
     },
   },
@@ -850,7 +880,7 @@ require('lazy').setup({
       require('mini.pairs').setup()
       require('mini.move').setup()
       require('mini.icons').setup()
-      -- require('mini.git').setup()
+      -- require('mini.comment').setup()
       -- require('mini.diff').setup()
       -- require('mini.starter').setup()
 
@@ -861,15 +891,20 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
     cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      local filetypes = { 'bash', 'c', 'diff', 'html', 'css', 'lua', 'javascript', 'typescript', 'vue' }
+      -- { 'bash', 'c', 'diff', 'html', 'css', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'typescript', 'vue' }
       require('nvim-treesitter').setup {
         ensure_installed = filetypes,
         sync_install = false,
         auto_install = true,
         highlight = {
+          enable = true,
+        },
+        autotag = {
           enable = true,
         },
       }
