@@ -832,12 +832,21 @@ require('lazy').setup({
         styles = {
           comments = { italic = false }, -- Disable italics in comments
         },
+        on_highlights = function(hl, c)
+          hl.Keyword = { fg = c.magenta }
+          hl['@keyword'] = { fg = c.magenta }
+          hl['@tag'] = { fg = c.red, bold = true }
+          hl['@tag.builtin'] = { fg = c.red, bold = true }
+          hl['@tag.attribute'] = { fg = c.cyan }
+          hl['@tag.delimiter'] = { fg = c.cyan }
+          hl['@type'] = { fg = c.orange }
+        end,
       }
 
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      -- vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
 
