@@ -494,14 +494,14 @@ require('lazy').setup({
         'mason-org/mason.nvim',
         opts = {
           servers = {
-            biome = {},
+            oxlint = {},
           },
           ensure_installed = {
             'lua-language-server',
             'stylua',
             'ts_ls',
             'vue-language-server',
-            'biome',
+            'oxlint',
           },
         },
       },
@@ -840,6 +840,7 @@ require('lazy').setup({
           hl['@tag.attribute'] = { fg = c.cyan }
           hl['@tag.delimiter'] = { fg = c.cyan }
           hl['@type'] = { fg = c.orange }
+          hl['SnacksDashboardHeader'] = { fg = c.yellow, bold = true }
         end,
       }
 
