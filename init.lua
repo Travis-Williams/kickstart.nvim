@@ -840,12 +840,12 @@ require('lazy').setup({
           hl['@tag.attribute'] = { fg = c.cyan }
           hl['@tag.delimiter'] = { fg = c.cyan }
           hl['@type'] = { fg = c.orange }
-          hl['SnacksDashboardHeader'] = { fg = c.red1, bold = true }
+          hl['SnacksDashboardHeader'] = { fg = c.yellow, bold = true }
           hl['SnacksDashboardIcon'] = { fg = c.magenta, bold = true }
           hl['SnacksDashboardDesc'] = { fg = c.cyan, bold = true }
           hl['SnacksDashboardKey'] = { fg = c.yellow, bold = true }
           hl['SnacksDashboardFooter'] = { fg = c.fg, bold = false }
-          hl['SnacksDashboardSpecial'] = { fg = c.orange, bold = true }
+          hl['SnacksDashboardSpecial'] = { fg = c.green, bold = true }
         end,
       }
 
